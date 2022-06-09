@@ -66,8 +66,8 @@ export default function Home() {
               </ul>
             </a>
           </Link>
+          <button type="button">Carregar mais posts</button>
         </div>
-        <button type="button">Carregar mais posts</button>
       </main>
     </>
   )
