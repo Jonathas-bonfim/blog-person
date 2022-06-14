@@ -7,16 +7,15 @@
     "build": "next build",
     "start": "next start",
     "test": "jest --watchAll",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "slicemachine": "start-slicemachine"
   },
   "dependencies": {
-    "@prismicio/client": "^6.4.3",
-    "@prismicio/helpers": "^2.3.0",
-    "@prismicio/next": "^0.1.2",
-    "@prismicio/react": "^2.3.0",
-    "@prismicio/types": "^0.1.27",
+    "@prismicio/client": "^4.0.0",
     "date-fns": "^2.19.0",
+    "js-cookie": "^2.2.1",
     "next": "10.0.7",
+    "nextjs-progressbar": "^0.0.8",
     "prismic-dom": "^2.2.5",
     "react": "17.0.1",
     "react-dom": "17.0.1",
