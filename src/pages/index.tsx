@@ -8,6 +8,9 @@ import Prismic from '@prismicio/client'
 
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
+import { useState } from 'react';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 interface Post {
   uid?: string;
@@ -29,44 +32,44 @@ interface HomeProps {
 }
 
 export default function Home({ postsPagination }: HomeProps) {
+  const formattedPost = postsPagination.results.map(post => {
+    return {
+      ...post,
+      first_publication_date: format(
+        new Date(post.first_publication_date),
+        'dd MMM yyyy',
+        {
+          locale: ptBR
+        }
+      )
+    }
+  });
+  const [posts, setPosts] = useState<Post[]>(formattedPost);
+
   return (
     <>
       <main className={commonStyles.container}>
         <Header />
         <div className={styles.posts}>
-          <Link href="/">
-            <a className={styles.post}>
-              <strong>Algum título</strong>
-              <p>Pensando em sincronização em vez de ciclos de vida</p>
-              <ul>
-                <li>
-                  <FiCalendar />
-                  15 Mar 2021
-                </li>
-                <li>
-                  <FiUser />
-                  Jonathas Bonfim
-                </li>
-              </ul>
-            </a>
-          </Link>
+          {posts.map(post => (
+            <Link href={`/post/${post.uid}`} key={post.uid}>
+              <a className={styles.post}>
+                <strong>{post.data.title}</strong>
+                <p>{post.data.subtitle}</p>
+                <ul>
+                  <li>
+                    <FiCalendar />
+                    {post.first_publication_date}
+                  </li>
+                  <li>
+                    <FiUser />
+                    {post.data.author}
+                  </li>
+                </ul>
+              </a>
+            </Link>
+          ))}
 
-          <Link href="/">
-            <a className={styles.post}>
-              <strong>Algum título</strong>
-              <p>Pensando em sincronização em vez de ciclos de vida</p>
-              <ul>
-                <li>
-                  <FiCalendar />
-                  15 Mar 2021
-                </li>
-                <li>
-                  <FiUser />
-                  Jonathas Bonfim
-                </li>
-              </ul>
-            </a>
-          </Link>
           <button type="button">Carregar mais posts</button>
         </div>
       </main>
@@ -79,7 +82,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const postsResponse = await prismic.query(
     [Prismic.Predicates.at('document.type', 'posts')],
     {
-      pageSize: 1,
+      pageSize: 3,
     }
   );
 
